@@ -9,8 +9,8 @@ from telethon.errors.rpcerrorlist import PeerIdInvalidError
 # These example values won't work. You must get your own api_id and
 # api_hash from https://my.telegram.org, under API Development.
 
-api_id1 = 22580886
-api_hash1 = '261cc9f72021203da950043327e7ee0c'
+api_id = 22580886
+api_hash = '261cc9f72021203da950043327e7ee0c'
 # The first parameter is the .session file name (absolute paths allowed)
 
 # client1.send_message('testtelethonz', 'Hello! Talking to you from Telethon')
@@ -18,7 +18,7 @@ api_hash1 = '261cc9f72021203da950043327e7ee0c'
 username = 'Teletool_Group'
 chat_id = 0
 
-client1 = TelegramClient('./session/session_name1.session', api_id = 1, api_hash = 'blalba')
+client1 = TelegramClient('./session/session_name.session', api_id = api_id , api_hash = 'api_hash')
 client1.start()
 clients = {client1}  # Các account
 
