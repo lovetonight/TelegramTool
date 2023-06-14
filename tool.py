@@ -18,7 +18,7 @@ api_hash1 = '261cc9f72021203da950043327e7ee0c'
 username = 'Teletool_Group'
 chat_id = 0
 
-client1 = TelegramClient('./session/session_name1', api_id1, api_hash1)
+client1 = TelegramClient('./session/session_name1.session', api_id = 1, api_hash = 'blalba')
 client1.start()
 clients = {client1}  # Các account
 
@@ -58,7 +58,7 @@ Delete tin nhắn trong trò chuyện với user có thể xóa tin nhắn của
 '''
 
 for client in clients:
-    try:
+    try:    
         entity = client.get_entity(username)
         chat_id = entity.id
         # Lấy tất cả tin nhắn (không giới hạn số lượng)
@@ -68,12 +68,23 @@ for client in clients:
         # client.delete_messages(entity, message_ids)
         # reply_message_id = 3
         # client.send_message(entity, reply_message, reply_to=reply_message_id)
+        client.send_file(entity,'img\demo.jpg'); #Send img
+        
         # time.sleep(2)
 
     except ValueError:
         print("Chat ID không hợp lệ")
     except Exception as e:
         print(f"Lỗi khi lấy nội dung cuộc trò chuyện: {str(e)}")
+        
+        
+'''
+Tự động rep tin nhắn, áp dụng cho user
+'''
 
+@client.on(events.NewMessage(pattern='(?i)hi|hello'))
+async def handler(event):
+   await event.reply('Hey!')
 
-getMessage(client1, 'CHINCRYPTO_CHAT', 17622, 17647)
+client.run_until_disconnected()
+# getMessage(client1, 'CHINCRYPTO_CHAT', 17622, 17647)
