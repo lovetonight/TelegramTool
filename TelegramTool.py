@@ -2,6 +2,8 @@ import asyncio
 from telethon import TelegramClient
 # from telethon.types import InputMediaSticker
 import random
+import json
+import time
 
 
 # Get Message
@@ -26,22 +28,15 @@ def GetMessage(client, username, start_id, end_id):
 
 
 # Send Message
-async def SendMessage(client, username, reply_message_id):
+async def SendMessage(client, username, reply_message_id, messages):
     try:
         entity = await client.get_entity(username)
-        reply_message = 'Hi guys!'  # Kịch bản nhắn tin
-        list1 = [0, 1, 2, 3]
-        script = ['Hello!', 'Good morning',
-                  'Có tin gì mới không anh em', 'btc down quá']
+        message_per_turn = random.choice([1, 2, 3, 4])
+        messages_send = random.sample(messages, message_per_turn)
 
-        # send message
-        await client.send_message(
-            entity, script[random.choice(list1)], reply_to=reply_message_id)
-
-        # send file
-        await client.send_file(
-            entity, './sticker/webm/2.webm', reply_to=reply_message_id)
-        # client.send_file(entity, 'img\demo.jpg')  # Send img
+        for message_send in messages_send:
+            time.sleep(2)    
+            await client.send_message(entity, message_send, reply_to=reply_message_id)
         return
     except ValueError:
         print("Chat ID không hợp lệ")
@@ -65,15 +60,43 @@ def DeleteMessage(client, username, limit_delete):
 def main():
 
     # username, chat_id
-    username = 'Teletool_Group'
-    chat_id = 0
+    username = 'GatherNetworkVietnam'
     reply_message_id = 0
     client = TelegramClient('./session/session (1).session',
                             api_id=1, api_hash='api_hash')
     client.start()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(SendMessage(client, username, reply_message_id))
 
+    client_2 = TelegramClient('./session/session (2).session',
+                            api_id=1, api_hash='api_hash')
+    client_2.start()
+
+    client_3 = TelegramClient('./session/session (3).session',
+                            api_id=1, api_hash='api_hash')
+    client_3.start()
+
+    client_4 = TelegramClient('./session/session (4).session',
+                            api_id=1, api_hash='api_hash')
+    client_4.start()
+
+    client_5 = TelegramClient('./session/session (5).session',
+                            api_id=1, api_hash='api_hash')
+    client_5.start()
+
+    json_file = open('./script/script.json', encoding="utf8")
+
+    data = json.load(json_file)
+
+    clients = [client, client_2, client_3, client_4, client_5]
+    clients_index = [0, 1, 2, 0, 3, 4, 1, 3, 4, 2]
+    index = 0
+
+    for messages in data:
+        time.sleep(20)    
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(SendMessage(clients[clients_index[index]], username, reply_message_id, messages))    
+        index += 1      
+    
+    json_file.close()
 
 if __name__ == "__main__":
     main()
